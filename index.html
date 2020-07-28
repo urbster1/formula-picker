@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Formula Picker</title>
+  <meta name="description" content="Pick a random formula">
+  <meta name="author" content="Aaron U">
+  <script>
+  const formulaNotes = ['♭2', '2', '♭3', '3', '4', '♭5', '5', '♭6', '6', '♭7', '7'];
+
+function generateFormula() {
+  let newFormula = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const checkboxes = document.querySelectorAll('input[name="noteNum"]:checked');
+  let formulaLengths = [];
+  checkboxes.forEach((checkbox) => {
+    formulaLengths.push(checkbox.value);
+  });
+  if (formulaLengths.length == 0) {
+    document.getElementById("formulaLen").innerHTML = "No numbers are selected";
+  } else {
+    let formulaLength = formulaLengths[Math.floor(Math.random() * formulaLengths.length)];
+    document.getElementById("formulaLen").innerHTML = "<p>Notes in formula: " + formulaLength + "</p>";
+    for (let i = newFormula.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * i);
+      const temp = newFormula[i];
+      newFormula[i] = newFormula[j];
+      newFormula[j] = temp;
+    }
+    newFormula.length = formulaLength - 1;
+    newFormula.sort(function(a, b){return a-b});
+    let formula = [];
+    formula = newFormula.map(note => formulaNotes[note])
+    document.getElementById("formula").innerHTML = "<p>1 " + formula.join(" ") + "</p>";
+  }
+  return false;
+}
+  </script>
+</head>
+<body>
+  <H1>
+  Formula Picker
+</H1>
+<p>
+  Number of notes in formula
+</p>
+<form>
+  <input type="checkbox" name="noteNum" value="2"> 2
+  <input type="checkbox" name="noteNum" value="3"> 3
+  <input type="checkbox" name="noteNum" value="4"> 4
+  <input type="checkbox" name="noteNum" value="5"> 5
+  <input type="checkbox" name="noteNum" value="6"> 6
+  <input type="checkbox" name="noteNum" value="7"> 7
+  <input type="checkbox" name="noteNum" value="8"> 8
+  <input type="checkbox" name="noteNum" value="9"> 9
+  <input type="checkbox" name="noteNum" value="10"> 10
+  <input type="checkbox" name="noteNum" value="10"> 11
+  <br>
+  <input name="generate" id="generate" type="button" value="Pick a formula" onclick="javascript:generateFormula();">
+</form>
+<br>
+<label id="formulaLen">
+</label><br>
+<label id="formula">
+</label>
+
+</body>
+</html>
